@@ -5,8 +5,17 @@ from . import models, schemas
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
+#new code
+# #return db.query(models.User).filter(models.User.id == user_id).first()
+def get_delete_items(db: Session, id:id):
+    to=db.query(models.Item).filter(models.Item.id==id).first()
+    db.delete(to)
+    db.commit()
 
 
+
+
+#
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 

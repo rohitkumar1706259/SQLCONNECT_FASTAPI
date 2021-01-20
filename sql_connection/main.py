@@ -42,8 +42,18 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+#new addition
+
+@app.get("/itemdel/{id}", response_model=List[schemas.Item])
+def read_item(id:int ,db: Session = Depends(get_db)):
+    items = crud.get_delete_items(db=db,id=id)
 
 
+
+
+
+
+# end
 @app.post("/users/{user_id}/items/", response_model=schemas.Item)
 def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
