@@ -1,5 +1,8 @@
+
+Required files and versions:
 uvicorn
 fastapi
 sqlalchemy
 configparser
 psycopg2
+pyhon 3.7
