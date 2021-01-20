@@ -20,6 +20,11 @@ class Item(ItemBase):
     class Config:
         orm_mode = True
 
+#
+class Itemupdate(ItemCreate):
+    id:int
+
+#
 #inherit from pydantic model so we can map them with paramters
 class UserBase(BaseModel):
     email: str

@@ -44,11 +44,18 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 #new addition
 
-@app.get("/itemdel/{id}", response_model=List[schemas.Item])
+@app.put("/itemdel/{id}", response_model=List[schemas.Item])
 def read_item(id:int ,db: Session = Depends(get_db)):
     items = crud.get_delete_items(db=db,id=id)
 
+@app.put("/users/{user_id}/items/", response_model=schemas.Item)
+def update_item_for_user(
+    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+):
+    return crud.update_user_item(db=db, item=item, user_id=user_id)
 
+#@app.put("/todos/{id}",responses=List[schemas.Item])
+#def update_todo(id:int,todo:schemas.Itemupdate)
 
 
 
