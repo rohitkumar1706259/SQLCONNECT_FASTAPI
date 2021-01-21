@@ -7,19 +7,36 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 #new code
 # #return db.query(models.User).filter(models.User.id == user_id).first()
-def get_delete_items(db: Session, id:id):
-    to=db.query(models.Item).filter(models.Item.id==id).first()
+def get_delete_items(db: Session, item_id:id):
+    to=db.query(models.Item).filter(models.Item.id==item_id).first()
     db.delete(to)
     db.commit()
-'''
-def get_update_items(db:Session,id:id):
-    to=db.query(models.Item).filter(models.Item.id==id).first()
-    to.title="Morning"
+#use user_id
+def update_user_item(db: Session, item: schemas.ItemCreate,user_id:int,item_id:id):
+    to=db.query(models.Item).filter(models.Item.id==item_id).first()
+    to.title=item.title
     db.commit()
     db.refresh(to)
     return to
-'''
-#
+
+def recreate_user_item(db: Session, item: schemas.ItemCreate, user_id: int, item_id: id):
+    to = db.query(models.Item).filter(models.Item.id == item_id).first()
+    to.title = item.title
+    to.description=item.description
+    db.commit()
+    db.refresh(to)
+    return to
+
+    #update_data=item.dict(exclude_unset=True)
+    #updated_item=stored_item_model.copy(update=update_data)
+    #db.commit()
+    #db.refresh(updated_item)
+    #return updated_item
+
+
+
+
+
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
@@ -52,10 +69,5 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.refresh(db_item)
     return db_item
 
-def update_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
-    db.commit()
-    db.refresh(db_item)
-    return db_item
+
 

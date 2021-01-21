@@ -1,14 +1,15 @@
 from typing import List, Optional
 from pydantic import BaseModel
-
+from fastapi import  Query
 #inherit from pydantic model so we can map them with paramters
 class ItemBase(BaseModel):
-    title: str
+    title: Optional[str] =Query(None, min_length=3, max_length=50)
     description: Optional[str] = None
 
 '''
 And create an ItemCreate and UserCreate that inherit from them (so they will have the same attributes), plus any additional data (attributes) needed for creation.
 '''
+
 class ItemCreate(ItemBase):
     pass
 
