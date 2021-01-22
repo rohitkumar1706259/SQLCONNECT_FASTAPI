@@ -35,13 +35,6 @@ def recreate_item_for_user(
     return crud.recreate_user_item(db=db, item=item,user_id=user_id,item_id=item_id)
 
 
-#@app.put("/todos/{id}",responses=List[schemas.Item])
-#def update_todo(id:int,todo:schemas.Itemupdate)
-
-
-
-
-# end
 @router.post("/users/{user_id}/items/", response_model=schemas.Item,tags=["items"])
 def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
