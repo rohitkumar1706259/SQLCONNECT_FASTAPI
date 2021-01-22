@@ -1,3 +1,4 @@
+
 '''
 
 
@@ -9,4 +10,3 @@ database_type=config.get('mount','database_type')
 print(database_type)
 '''
 
-hello=123
