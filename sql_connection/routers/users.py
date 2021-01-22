@@ -44,6 +44,13 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
+@router.patch("/users/{user_id}", response_model=schemas.User,tags=["Users"])
+def update_email(
+    user_id:int,user: schemas.UserCreate, db: Session = Depends(get_db)
+):
+    return crud.user_update(db=db,user=user,user_id=user_id)
+
+
 
 
 

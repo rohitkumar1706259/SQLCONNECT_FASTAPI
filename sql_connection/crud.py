@@ -28,6 +28,16 @@ def update_user_item(db: Session, item: schemas.ItemCreate,user_id:int,item_id:i
     db.refresh(to)
     return to
 
+def user_update(db: Session, user: schemas.UserCreate,user_id:int):
+    to=db.query(models.User).filter(models.User.id==user_id).first()
+    to.email=user.email
+    db.commit()
+    db.refresh(to)
+    return to
+
+
+
+
 def recreate_user_item(db: Session, item: schemas.ItemCreate, user_id: int, item_id: id):
     to = db.query(models.Item).filter(models.Item.id == item_id).first()
     to.title = item.title
