@@ -5,14 +5,15 @@ from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
-
+from .routers import users,items
 #creating all db
 models.Base.metadata.create_all(bind=engine)
 
 #calling api
 app = FastAPI()
 
-
+app.include_router(users.router)
+app.include_router(items.router)
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -20,7 +21,7 @@ def get_db():
         yield db
     finally:
         db.close()
-
+'''
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -42,20 +43,20 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
-#new addition
+
+
+
+'''
 
 
 
 
-@app.delete("/item/{item_id}", response_model=List[schemas.Item])
-def delete_item(item_id:int ,db: Session = Depends(get_db)):
-    items = crud.get_delete_items(db=db,item_id=item_id)
 
-@app.patch("/users/{user_id}/items/{item_id}", response_model=schemas.Item)
-def update_item_for_user(
-    user_id:int,item_id: int,item: schemas.ItemCreate, db: Session = Depends(get_db)
-):
-    return crud.update_user_item(db=db, item=item,user_id=user_id,item_id=item_id)
+
+
+
+
+
 '''
 @app.patch("/users/{email}", response_model=schemas.User)
 def update_password(email: str, db: Session = Depends(get_db)):
@@ -65,6 +66,16 @@ def update_password(email: str, db: Session = Depends(get_db)):
     return db_user
 
 '''
+'''
+@app.delete("/item/{item_id}", response_model=List[schemas.Item])
+def delete_item(item_id:int ,db: Session = Depends(get_db)):
+    items = crud.get_delete_items(db=db,item_id=item_id)
+
+@app.patch("/users/{user_id}/items/{item_id}", response_model=schemas.Item)
+def update_item_for_user(
+    user_id:int,item_id: int,item: schemas.ItemCreate, db: Session = Depends(get_db)
+):
+    return crud.update_user_item(db=db, item=item,user_id=user_id,item_id=item_id)
 
 
 
@@ -101,3 +112,4 @@ def read_item(id:int ,db: Session = Depends(get_db)):
     if items==[]:
         raise HTTPException(status_code=404, detail="404 -Item not found")
     return items
+'''
