@@ -1,7 +1,8 @@
-
-
+python-multipart
 uvicorn
 fastapi
 sqlalchemy
 configparser
 psycopg2
+python-jose[cryptography]
+passlib[bcrypt]
