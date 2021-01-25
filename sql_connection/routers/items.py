@@ -2,11 +2,10 @@ from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-
 from sql_connection import crud, models, schemas
 from sql_connection.database import SessionLocal, engine
 from fastapi import APIRouter
-
+from sql_connection.routers import users
 
 router=APIRouter()
 def get_db():
@@ -37,7 +36,7 @@ def recreate_item_for_user(
 
 @router.post("/users/{user_id}/items/", response_model=schemas.Item,tags=["items"])
 def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db),current:schemas.User=Depends(users.get_current_active_user)
 ):
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
