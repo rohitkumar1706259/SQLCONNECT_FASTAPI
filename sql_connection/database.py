@@ -1,14 +1,16 @@
 #create sql alchemy parts
 #no1
-#import os.path
+from pathlib import Path
+import os.path
 #from path import path
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import configparser
 config=configparser.ConfigParser();
-config.read(r'C:\Users\KIIT\PycharmProjects\FASTAPI_VIRTUAL\sql_connection\config.ini')
-#config.read(r'sql_conection\config.ini')
+#config.read(r'C:\Users\KIIT\PycharmProjects\FASTAPI_VIRTUAL\sql_connection\config.ini')
+filename = Path("sql_connection/config.ini")
+config.read(filename)
 database_type=str(config.get('demo','database_type'))
 database_user=str(config.get('demo','database_user'))
 database_pass=str(config.get('demo','database_pass'))
