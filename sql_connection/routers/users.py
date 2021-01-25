@@ -22,40 +22,6 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/users/", response_model=schemas.User,tags=["Users"])
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.create_user(db=db, user=user)
-
-
-@router.get("/users/", response_model=List[schemas.User],tags=["Users"])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_users(db, skip=skip, limit=limit)
-    return users
-
-@router.delete("/users/{user_id}", response_model=List[schemas.User],tags=["Users"])
-def delete_User(user_id:int ,db: Session = Depends(get_db)):
-    items = crud.get_delete_users(db=db,user_id=user_id)
-
-
-
-
-@router.get("/users/{user_id}", response_model=schemas.User,tags=["Users"])
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user_name(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
-
-
-@router.patch("/users/{user_id}", response_model=schemas.User,tags=["Users"])
-def update_email(
-    user_id:int,user: schemas.UserCreate, db: Session = Depends(get_db)
-):
-    return crud.user_update(db=db,user=user,user_id=user_id)
-
 
 #
 '''
@@ -144,10 +110,42 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 
 
 
+@router.post("/users/me", response_model=schemas.User,tags=["Users"])
+async def create_user(user: schemas.UserCreate,current:schemas.User=Depends(get_current_active_user), db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return crud.create_user(db=db, user=user)
 
 
 
-#
+
+
+@router.get("/users/me", response_model=List[schemas.User],tags=["Users"])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db),current:schemas.User=Depends(get_current_active_user)):
+    users = crud.get_users(db, skip=skip, limit=limit)
+    return users
+
+@router.delete("/users/{user_id}", response_model=List[schemas.User],tags=["Users"])
+def delete_User(user_id:int ,db: Session = Depends(get_db),current:schemas.User=Depends(get_current_active_user)):
+    items = crud.get_delete_users(db=db,user_id=user_id)
+
+
+
+@router.get("/users/{user_id}", response_model=schemas.User,tags=["Users"])
+def read_user(user_id: int, db: Session = Depends(get_db),current:schemas.User=Depends(get_current_active_user)):
+    db_user = crud.get_user_name(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+
+@router.patch("/users/{user_id}", response_model=schemas.User,tags=["Users"])
+def update_email(
+    user_id:int,user: schemas.UserCreate, db: Session = Depends(get_db),current:schemas.User=Depends(get_current_active_user)
+):
+    return crud.user_update(db=db,user=user,user_id=user_id)
+
 
 
 
