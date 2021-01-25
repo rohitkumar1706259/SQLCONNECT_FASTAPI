@@ -16,12 +16,12 @@ def get_db():
         db.close()
 
 @router.delete("/item/{item_id}", response_model=List[schemas.Item],tags=["items"])
-def delete_item(item_id:int ,db: Session = Depends(get_db)):
+def delete_item(item_id:int ,db: Session = Depends(get_db),current:schemas.User=Depends(users.get_current_active_user)):
     items = crud.get_delete_items(db=db,item_id=item_id)
 
 @router.patch("/users/{user_id}/items/{item_id}", response_model=schemas.Item,tags=["items"])
 def update_item_for_user(
-    user_id:int,item_id: int,item: schemas.ItemCreate, db: Session = Depends(get_db)
+    user_id:int,item_id: int,item: schemas.ItemCreate, db: Session = Depends(get_db),current:schemas.User=Depends(users.get_current_active_user)
 ):
     return crud.update_user_item(db=db, item=item,user_id=user_id,item_id=item_id)
 
@@ -29,7 +29,7 @@ def update_item_for_user(
 
 @router.put("/users/{user_id}/items/{item_id}", response_model=schemas.Item,tags=["items"])
 def recreate_item_for_user(
-    user_id:int,item_id: int,item: schemas.ItemCreate, db: Session = Depends(get_db)
+    user_id:int,item_id: int,item: schemas.ItemCreate, db: Session = Depends(get_db),current:schemas.User=Depends(users.get_current_active_user)
 ):
     return crud.recreate_user_item(db=db, item=item,user_id=user_id,item_id=item_id)
 
@@ -48,7 +48,7 @@ def read_items(db: Session = Depends(get_db),skip: int = 0, limit: int = 100):
 
 '''
 @router.get("/item/{id}", response_model=List[schemas.Item],tags=["items"])
-def read_item(id:int ,db: Session = Depends(get_db)):
+def read_item(id:int ,db: Session = Depends(get_db),current:schemas.User=Depends(users.get_current_active_user)):
     items = crud.get_one_items(db=db,id=id)
     if items==[]:
         raise HTTPException(status_code=404, detail="404 -Item not found")

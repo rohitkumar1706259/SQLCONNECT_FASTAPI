@@ -129,6 +129,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db),cu
 @router.delete("/users/{user_id}", response_model=List[schemas.User],tags=["Users"])
 def delete_User(user_id:int ,db: Session = Depends(get_db),current:schemas.User=Depends(get_current_active_user)):
     items = crud.get_delete_users(db=db,user_id=user_id)
+    return items
 
 
 
