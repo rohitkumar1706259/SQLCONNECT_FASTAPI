@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel,ValidationError
 from fastapi import  Query
 #inherit from pydantic model so we can map them with paramters
 class ItemBase(BaseModel):
@@ -52,6 +52,8 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+    #
+    scopes: List[str] = []
 
 class UserInDB(User):
     hashed_password: str
